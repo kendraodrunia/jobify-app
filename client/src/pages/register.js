@@ -15,16 +15,21 @@ const initialState = {
 
 function Register() {
   const [values, setValues] = useState(initialState);
-  const {isLoading, showAlert} = useAppContext()
+  const {isLoading, showAlert, displayAlert} = useAppContext()
   // global context and useNavigate later
 
   const handleChange = (e) => {
-    console.log(e.target);
+    setValues({...values, [e.target.name]: e.target.value})
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
     console.log(e.target);
+    const {name, email, password, isMember} = values
+
+    if(!email || !password || (!isMember && !name)){
+      displayAlert()
+    }
   };
 
   const toggleMember = () => {
@@ -37,14 +42,14 @@ function Register() {
         <Logo />
         <h3>{values.isMember ? 'Login' : 'Register'}</h3>
         {showAlert && <Alert/>}
-        {/* {!values.isMember && (
+        {!values.isMember && (
             <FormRow
              type='text'
              name='name'
              value={values.name}
              handleChange={handleChange}
             />
-        )} */}
+        )}
         <FormRow 
          type="email" 
          name='email'
@@ -54,7 +59,7 @@ function Register() {
         <FormRow 
          type="password" 
          name='password'
-         value={values.name} 
+         value={values.password} 
          handleChange={handleChange} 
          />
         <button type='submit' className='btn btn-block'>
