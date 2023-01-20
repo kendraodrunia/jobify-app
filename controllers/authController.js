@@ -1,12 +1,31 @@
 import User from '../models/User.js'
+import {StatusCodes} from 'http-status-codes'
+import {
+    NotFoundError,
+    BadRequestError,
+} from '../errors/index.js'
+// don't need the try and catch in very controller by adding a package
+const register = async(req, res, next) =>{
+    
+    const {name, email, password } = req.body
+    if(!name || !email || !password){
+        throw new BadRequestError("Please provide all values")
+    }
+    const userAlreadyExists = await User.findOne({email})
+    if(userAlreadyExists){
+        throw new BadRequestError('Email already in use')
+    }
+    const user = await User.create({name, email, password})
+    const token = user.createJWT()
 
-const register = async(req, res) =>{
-   try {
-    const user = await User.create(req.body)
-    res.status(201).json({user})
-   } catch (error) {
-    res.status(500).json({msg: "there was an error"})
-   }
+    res.status(StatusCodes.CREATED).json({user})
+//    try {
+//     const user = await User.create(req.body)
+//     res.status(200).json({user})
+//    } catch (error) {
+//     // passes it to the error handler middleware
+//     next(error)
+//     }
 }
 
 const login = async(req, res) =>{

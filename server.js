@@ -1,7 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 dotenv.config()
-
+import 'express-async-errors' // this will pass on errors to our error handler middleware
 // db and authenticate user
 import connectDB from './db/connect.js';
 
