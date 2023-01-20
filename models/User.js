@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import validator from "validator";
-const UserScheme = new mongoose.SchemaType({
+
+const UserSchema = new mongoose.Schema({
     name: { 
         type: String, 
         required: [true, 'Please provide name'],
@@ -40,4 +41,4 @@ const UserScheme = new mongoose.SchemaType({
     },
 })
                             // will create a Users collection in mongoDB with that schema
-export default mongoose.model('User', UserScheme)
+export default mongoose.model('User', UserSchema)
