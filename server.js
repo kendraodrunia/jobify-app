@@ -16,11 +16,9 @@ import errorHandlerMiddleware from './middleware/error-handler.js'
 app.use(express.json()) // this json data available to use to use in the controllers
 
 app.get('/', (req, res) => {
-  console.log(res)
   res.json({msg:'Welcome!'});
 });
 app.get('/api/v1', (req, res) => {
-  console.log(res)
   res.json({msg:'API!'});
 });
 app.use('/api/v1/auth', authRouter)
