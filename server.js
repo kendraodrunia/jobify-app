@@ -1,4 +1,5 @@
 import express from 'express';
+import morgan from 'morgan'
 import dotenv from 'dotenv';
 dotenv.config()
 import 'express-async-errors' // this will pass on errors to our error handler middleware
@@ -12,6 +13,10 @@ const app = express();
 // middleware
 import notFoundMiddleware from './middleware/not-found.js';
 import errorHandlerMiddleware from './middleware/error-handler.js'
+
+if (process.env.NODE_ENV !== 'production') {
+  app.use(morgan('dev'));
+}
 
 app.use(express.json()) // this json data available to use to use in the controllers
 

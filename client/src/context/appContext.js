@@ -10,14 +10,18 @@ import {
   REGISTER_USER_ERROR
 } from "./actions"
 
+  const token = localStorage.getItem('token')
+  const user = localStorage.getItem('user')
+  const userLocation = localStorage.getItem('location')
+
  const initialState = {
   isLoading: false,
   showAlert: false,
   alertText: '',
   alertType: '',
-  user: null,
-  token: null,
-  userLocation: '',
+  user: user ? user : null,
+  token: token ? token : null,
+  userLocation: userLocation ? userLocation: '',
   jobLocation: ''
 };
 const AppContext = React.createContext();
@@ -37,6 +41,18 @@ const AppProvider = ({ children }) => {
     clearAlert()
   }
 
+  const addUserToLocalStorage = ({ user, token, location }) => {
+  localStorage.setItem('user', JSON.stringify(user));
+  localStorage.setItem('token', token);
+  localStorage.setItem('location', location);
+};
+
+const removeUserFromLocalStorage = () => {
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+  localStorage.removeItem('location');
+};
+
   const registerUser = async (currentUser) => {
   dispatch({ type: REGISTER_USER_BEGIN });
   try {
@@ -51,7 +67,11 @@ const AppProvider = ({ children }) => {
         location,
       },
     });
-
+    addUserToLocalStorage({
+      user,
+      token,
+      location,
+    });
     // will add later
     // addUserToLocalStorage({
     //   user,
