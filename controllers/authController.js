@@ -19,11 +19,15 @@ const register = async(req, res, next) =>{
     const token = user.createJWT()
 
     res.status(StatusCodes.CREATED).json({
-        name: user.name,
-        lastName: user.lastName,
-        email: user.email,
-        location: user.location,
-    })
+    user: {
+      email: user.email,
+      lastName: user.lastName,
+      location: user.location,
+      name: user.name,
+    },
+
+    location: user.location,
+  })
 //    try {
 //     const user = await User.create(req.body)
 //     res.status(200).json({user})
