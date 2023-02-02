@@ -23,8 +23,7 @@ function Register() {
     isLoading, 
     showAlert,
     displayAlert, 
-    registerUser,
-    loginUser
+    setUpUser
     } = useAppContext()
   // global context and useNavigate later
 
@@ -42,9 +41,9 @@ function Register() {
 
     const currentUser = { name, email, password };
     if (isMember) {
-      loginUser(currentUser)
+      setUpUser({currentUser, endPoint: 'login', alertText: 'Login Successful! Redirecting...'})
     } else {
-      registerUser(currentUser);
+      setUpUser({currentUser, endPoint: 'register', alertText: 'User Created! Redirecting...'})
     }
   };
 

@@ -54,7 +54,7 @@ const start = async ()=>{
     app.listen(port, () => console.log(`Server is listening on port ${port}...`));
     // you're streaming data, leaving a connection open, and any request from the client is listen
     // takes in a port to listen to
-    // opens up on that specific port. then when cliuents on the frontend makes a request to that port, and since the app is lien to on that port, the request will be made
+    // opens up on that specific port. then when clients on the frontend makes a request to that port, and since the app is lien to on that port, the request will be made
   }catch(error){
     console.log(error)
   }
