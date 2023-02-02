@@ -22,8 +22,10 @@ function Register() {
     user,
     isLoading, 
     showAlert,
-     displayAlert, 
-     registerUser} = useAppContext()
+    displayAlert, 
+    registerUser,
+    loginUser
+    } = useAppContext()
   // global context and useNavigate later
 
   const handleChange = (e) => {
@@ -32,7 +34,6 @@ function Register() {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(e.target);
     const {name, email, password, isMember} = values
 
     if(!email || !password || (!isMember && !name)){
@@ -41,7 +42,7 @@ function Register() {
 
     const currentUser = { name, email, password };
     if (isMember) {
-      console.log('already a member');
+      loginUser(currentUser)
     } else {
       registerUser(currentUser);
     }
@@ -52,14 +53,12 @@ function Register() {
   }; 
 
   useEffect(() => {
-    console.log("USER",{user})
     if (user) {
       setTimeout(() => {
         navigate('/');
       }, 3000);
     }
   }, [user, navigate]);
-  console.log("USEROUT",user)
   return (
     <Wrapper className='full-page'>
       <form className='form' onSubmit={onSubmit}>

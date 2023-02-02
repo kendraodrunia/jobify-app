@@ -3,6 +3,7 @@ import {StatusCodes} from 'http-status-codes'
 import {
     NotFoundError,
     BadRequestError,
+    UnAuthenticatedError
 } from '../errors/index.js'
 // don't need the try and catch in very controller by adding a package
 const register = async(req, res, next) =>{
@@ -38,7 +39,24 @@ const register = async(req, res, next) =>{
 }
 
 const login = async(req, res) =>{
-    res.send('login user')
+    
+  const { email, password } = req.body;
+  if (!email || !password) {
+    throw new BadRequestError('Please provide all values');
+  }
+  // we have select: false in the schema. we have to override it by adding the select
+  const user = await User.findOne({ email }).select('+password');
+
+  if (!user) {
+    throw new UnAuthenticatedError('Invalid Credentials');
+  }
+  const isPasswordCorrect = await user.comparePassword(password);
+  if (!isPasswordCorrect) {
+    throw new UnAuthenticatedError('Invalid Credentials');
+  }
+  const token = user.createJWT();
+  user.password = undefined; // make the user password undefined or only return what is needed
+  res.status(StatusCodes.OK).json({ user, token, location: user.location });
 }
 
 const updateUser = async(req, res) =>{

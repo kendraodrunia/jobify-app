@@ -54,5 +54,10 @@ UserSchema.methods.createJWT = function(){
     return jwt.sign({userID: this._id}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_LIFETIME})
 }  
 
+UserSchema.methods.comparePassword = async function (candidatePassword) {
+  const isMatch = await bcrypt.compare(candidatePassword, this.password);
+  return isMatch;
+};
+
 // will create a Users collection in mongoDB with that schema
 export default mongoose.model('User', UserSchema)

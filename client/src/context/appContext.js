@@ -7,7 +7,10 @@ import {
   CLEAR_ALERT,    
   REGISTER_USER_BEGIN,
   REGISTER_USER_SUCCESS,
-  REGISTER_USER_ERROR
+  REGISTER_USER_ERROR,
+  LOGIN_USER_BEGIN,
+  LOGIN_USER_SUCCESS,
+  LOGIN_USER_ERROR
 } from "./actions"
 
   const token = localStorage.getItem('token')
@@ -88,12 +91,33 @@ const removeUserFromLocalStorage = () => {
   clearAlert();
   };
 
+  const loginUser = async (currentUser) => {
+  dispatch({ type: LOGIN_USER_BEGIN });
+  try {
+    const { data } = await axios.post('/api/v1/auth/login', currentUser);
+    const { user, token, location } = data;
+
+    dispatch({
+      type: LOGIN_USER_SUCCESS,
+      payload: { user, token, location },
+    });
+
+    addUserToLocalStorage({ user, token, location });
+  } catch (error) {
+    dispatch({
+      type: LOGIN_USER_ERROR,
+      payload: { message: error.response.data.message },
+    });
+  }
+  clearAlert();
+  };  
   return (
     <AppContext.Provider
       value={{
         ...state,
         displayAlert,
-        registerUser
+        registerUser,
+        loginUser
       }}
     >
       {children}
