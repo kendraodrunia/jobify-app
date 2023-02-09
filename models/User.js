@@ -51,7 +51,9 @@ UserSchema.pre('save', async function(){
 // JWT is also stored in local storage. every future request would use that token to validate
 UserSchema.methods.createJWT = function(){
     // jwt.sign(payload,secret,options)
-    return jwt.sign({userID: this._id}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_LIFETIME})
+    return jwt.sign({userID: this._id}, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_LIFETIME,
+    })
 }  
 
 UserSchema.methods.comparePassword = async function (candidatePassword) {
