@@ -78,13 +78,17 @@ const AppProvider = ({ children }) => {
   };
 
   const logoutUser = () => {
-  dispatch({ type: LOGOUT_USER })
-  removeUserFromLocalStorage()
-}
+    dispatch({ type: LOGOUT_USER })
+    removeUserFromLocalStorage()
+  }
 
 
   const toggleSidebar= ()=>{
     dispatch({type: TOGGLE_SIDEBAR})
+  }
+
+  const updateUser = async (currentUser) => {
+    console.log(currentUser)
   }
   return (
     <AppContext.Provider
@@ -93,7 +97,8 @@ const AppProvider = ({ children }) => {
         displayAlert,
         setUpUser, 
         toggleSidebar,
-        logoutUser
+        logoutUser,
+        updateUser
       }}
     >
       {children}
