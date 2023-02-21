@@ -9,7 +9,10 @@ import {
   SETUP_USER_SUCCESS,
   SETUP_USER_ERROR,
   TOGGLE_SIDEBAR,
-  LOGOUT_USER
+  LOGOUT_USER,
+  UPDATE_USER_BEGIN,
+  UPDATE_USER_SUCCESS,
+  UPDATE_USER_ERROR
 } from "./actions"
 
   const token = localStorage.getItem('token')
@@ -30,14 +33,40 @@ import {
 const AppContext = React.createContext();
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  
-    const clearAlert = () => {
-      setTimeout(() => {
-        dispatch({
-          type: CLEAR_ALERT,
-        });
-      }, 3000);
-    };
+  // axios - adds auth and prevents sending bearer tokens to other api calls which occurs with a global setup
+  const authFetch = axios.create({
+    baseURL: '/api/v1',
+  });
+  // axios request interceptor. you can think of these as middleware
+  authFetch.interceptors.request.use(
+    (config) => {
+      config.headers['Authorization'] = `Bearer ${state.token}`;
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
+    }
+  );
+  // axios response interceptor
+  authFetch.interceptors.response.use(
+    (response) => {
+      return response;
+    },
+    (error) => {
+      if (error.response.status === 401) {
+        logoutUser()
+      }
+      return Promise.reject(error);
+    }
+  );
+
+  const clearAlert = () => {
+    setTimeout(() => {
+      dispatch({
+        type: CLEAR_ALERT,
+      });
+    }, 3000);
+  };
 
   const displayAlert = ()=>{
     dispatch({type: DISPLAY_ALERT})
@@ -58,23 +87,25 @@ const AppProvider = ({ children }) => {
 
   const setUpUser = async ({currentUser, endPoint, alertText}) => {
   dispatch({ type: SETUP_USER_BEGIN });
-  try {
-    const { data } = await axios.post(`/api/v1/auth/${endPoint}`, currentUser);
-    const { user, token, location } = data;
+    try {
+      const { data } = await axios.post(`/api/v1/auth/${endPoint}`, currentUser);
+      const { user, token, location } = data;
 
-    dispatch({
-      type: SETUP_USER_SUCCESS,
-      payload: { user, token, location, alertText },
-    });
+      dispatch({
+        type: SETUP_USER_SUCCESS,
+        payload: { user, token, location, alertText },
+      });
 
-    addUserToLocalStorage({ user, token, location });
-  } catch (error) {
-    dispatch({
-      type: SETUP_USER_ERROR,
-      payload: { message: error.response.data.message },
-    });
-  }
-  clearAlert();
+      addUserToLocalStorage({ user, token, location });
+    } catch (error) {
+      if(error.response.status !== 401){
+        dispatch({
+          type: SETUP_USER_ERROR,
+          payload: { message: error.response.data.message },
+        });
+      }
+    }
+    clearAlert();
   };
 
   const logoutUser = () => {
@@ -88,8 +119,26 @@ const AppProvider = ({ children }) => {
   }
 
   const updateUser = async (currentUser) => {
-    console.log(currentUser)
+    dispatch({ type: UPDATE_USER_BEGIN });
+    try {
+      const { data } = await authFetch.patch('/auth/updateUser', currentUser);
+
+      const { user, location, token } = data;
+      dispatch({
+        type: UPDATE_USER_SUCCESS,
+        payload: { user, location, token },
+      });
+
+      addUserToLocalStorage({ user, location, token });
+    } catch (error) {
+      dispatch({
+        type: UPDATE_USER_ERROR,
+        payload: { message: error.response.data.message },
+      });
+    }
+    clearAlert();
   }
+
   return (
     <AppContext.Provider
       value={{
