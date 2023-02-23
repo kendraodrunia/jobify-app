@@ -56,6 +56,8 @@ const AppProvider = ({ children }) => {
   const authFetch = axios.create({
     baseURL: '/api/v1',
   });
+
+  
   // axios request interceptor. you can think of these as middleware
   authFetch.interceptors.request.use(
     (config) => {
