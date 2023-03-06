@@ -1,5 +1,11 @@
 import express from 'express';
-import morgan from 'morgan'
+/**
+ * express is a back end web application framework for building RESTful APIs with Node.js
+ */
+import morgan from 'morgan' 
+/**
+ * morgan is a Node.js and Express middleware to log HTTP requests and errors, and simplifies the process. In Node.js and Express, middleware is a function that has access to the request and response lifecycle methods, and the next() method to continue logic in your Express server.
+ */
 import dotenv from 'dotenv';
 dotenv.config()
 import 'express-async-errors' // this will pass on errors to our error handler middleware
