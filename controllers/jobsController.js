@@ -1,8 +1,11 @@
-import Job from '../models/Job.js';
+// Dependencies
 import { StatusCodes } from 'http-status-codes';
+import mongoose from 'mongoose';
+import moment from 'moment';
+
+import Job from '../models/Job.js';
 import { BadRequestError, NotFoundError } from '../errors/index.js';
 import checkPermissions from '../utils/checkPermissions.js'
-import mongoose from 'mongoose';
 
 const createJob = async (req, res) => {
   const { position, company } = req.body;
@@ -83,7 +86,7 @@ const showStats = async (req, res) => {
     declined: stats.declined || 0,
   };
   let monthlyApplications = await Job.aggregate([
-    { $match: { createdBy: mongoose.Types.ObjectId(req.user.userId) } },
+    { $match: { createdBy: mongoose.Types.ObjectId(req.user.userID) } },
     {
       $group: {
         _id: {
@@ -100,6 +103,23 @@ const showStats = async (req, res) => {
     { $sort: { '_id.year': -1, '_id.month': -1 } },
     { $limit: 6 },
   ]);
+
+  monthlyApplications = monthlyApplications
+    .map((item) => {
+      const {
+        _id: { year, month },
+        count,
+      } = item;
+      // mongoDB counts months 1-12
+      // moment counts months 0-11 so that's why we are subtracting by one
+      const date = moment()
+        .month(month - 1)
+        .year(year)
+        .format('MMM Y');
+      return { date, count };
+    })
+    .reverse();
+
   res.status(StatusCodes.OK).json({ defaultStats, monthlyApplications });
 };
 

@@ -5,7 +5,7 @@ import {Loading, StatsContainer, ChartsContainer} from "../../components"
 
 const Stats = ()=>{
     const {showStats, isLoading, monthlyApplications} = useAppContext()
-    
+    console.log({monthlyApplications})
     useEffect(() => {
         showStats()
     }, [])
