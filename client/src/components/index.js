@@ -9,9 +9,11 @@ import JobsContainer from "./JobsContainer";
 import StatsContainer from "./StatsContainer";
 import ChartsContainer from "./ChartsContainer";
 import Loading from "./Loading";
+import FormRowSelect from './FormRowSelect'
 export {
     Logo,
     FormRow,
+    FormRowSelect,
     Alert,
     BigSidebar,
     SmallSidebar,
@@ -20,5 +22,5 @@ export {
     JobsContainer,
     StatsContainer,
     ChartsContainer,
-    Loading
+    Loading,
 }

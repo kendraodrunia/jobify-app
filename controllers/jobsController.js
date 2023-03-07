@@ -21,11 +21,46 @@ const createJob = async (req, res) => {
 };
 
 const getAllJobs = async (req, res) => {
-  const jobs = await Job.find({ createdBy: req.user.userID });
+  const {status, jobType, sort, search, page, limit} = req.query
 
+  const queryObject = {
+    createdBy: req.user.userID
+  }
+
+  if(status && status !== 'all') queryObject.status = status
+  if(jobType && jobType !== 'all') queryObject.jobType = jobType
+  
+  if (search) {
+    queryObject.position = { $regex: search, $options: 'i' }; //case insensitive
+  }
+  let results =  Job.find(queryObject);
+  // chaining the sort on the queried results
+  if (sort === 'latest') {
+    results = results.sort('-createdAt');
+  }
+  if (sort === 'oldest') {
+    results = results.sort('createdAt');
+  }
+  if (sort === 'a-z') {
+    results = results.sort('position');
+  }
+  if (sort === 'z-a') {
+    results = results.sort('-position');
+  }
+
+  // setup pagination
+  const pageValue = Number(page) || 1;
+  const limitValue = Number(limit) || 10;
+  const skipValue = (pageValue - 1) * limitValue;
+
+  results = results.skip(skipValue).limit(limitValue);
+
+  const jobs = await results
+  const totalJobs = await Job.countDocuments(queryObject)
+  const numOfPages = Math.ceil(totalJobs/limitValue)
   res
     .status(StatusCodes.OK)
-    .json({ jobs, totalJobs: jobs.length, numOfPages: 1 });
+    .json({ jobs, totalJobs, numOfPages });
 };
 
 const updateJob = async (req, res) => {
