@@ -45,7 +45,6 @@ UserSchema.pre('save', async function(){
 
     const salt = await bcrypt.genSalt(10) // creating extra characters
     this.password = await bcrypt.hash(this.password, salt)
-    console.log(this.password)
 }) // hook that is called when we save (.save()) a doc but not every method triggers it. e.g. findAndUpdate
 
 // JWT so only the user can access their jobs

@@ -11,7 +11,6 @@ const PageButtonContainer = () => {
   });
 
   const prevPage = () => {
-    console.log('prev page');
     let pageValue = page - 1
     if(pageValue <= 0) pageValue = 1
     changePage(pageValue)
@@ -20,7 +19,6 @@ const PageButtonContainer = () => {
     let pageValue = page + 1
     if(pageValue > numOfPages) pageValue = numOfPages
     changePage(pageValue)
-    console.log('next page');
   };
 
   return (
