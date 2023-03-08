@@ -1,7 +1,10 @@
 import { useAppContext } from '../context/appContext';
 import Wrapper from '../assets/wrappers/SearchContainer';
 import { FormRow, FormRowSelect } from './index';
+import {useState, useMemo} from 'react'
+
 const SearchContainer = () => {
+  const [localSearch, setLocalSearch] = useState("")
   const {
     isLoading,
     search,
@@ -16,12 +19,25 @@ const SearchContainer = () => {
   } = useAppContext();
 
   const handleSearch = (e) => {
-    if (isLoading) return;
+    // if (isLoading) return;
     handleChange({ name: e.target.name, value: e.target.value });
   };
 
+  const debounce = () => {
+    let timeoutID
+    return (e) => {
+      setLocalSearch(e.target.value)
+      clearTimeout(timeoutID)
+      timeoutID = setTimeout(() => {
+        handleChange({ name: e.target.name, value: e.target.value });
+      }, 1000)
+    }
+  }
+  const optimizedDebounce = useMemo(() => debounce(), [])
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLocalSearch('')
     clearFilters();
   };
 
@@ -34,8 +50,8 @@ const SearchContainer = () => {
           <FormRow
             type='text'
             name='search'
-            value={search}
-            handleChange={handleSearch}
+            value={localSearch}
+            handleChange={optimizedDebounce}
           />
           {/* rest of the inputs */}
           <FormRowSelect
