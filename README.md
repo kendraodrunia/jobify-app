@@ -1,24 +1,30 @@
 # Jobify
+My Jobify application was a private personal project. I am making it public to showcase my experience with a MERN stack.
 
-#### Track Your Job Search
-
-Project in Action - [Jobify](https://www.jobify.live/)
-
-#### Support
-
-Find the App Useful? [You can always buy me a coffee](https://www.buymeacoffee.com/johnsmilga)
-
-#### Run The App Locally
-
-```sh
-npm run install-dependencies
+In this application you can 
+- register as a user.
+- log in as an existing user
+- create new jobs
+- update existing jobs
+- delete existing jobs
+- view stats on the jobs
+### Update .env file
+setup values for 
+```
+PORT=4000
+MONGO_URL=""
+JWT_SECRET=
+JWT_LIFETIME=1d
 ```
 
-- rename .env.temp to .env
-- setup values for - MONGO_URL, JWT_SECRET, JWT_LIFETIME
+### Run The App Locally
+under the client folder
+`npm run install` and
+at the root
+`npm run install`
 
-```sh
+
+### Run
 npm start
-```
+visit url http://localhost:3000/
 
-- visit url http://localhost:3000/
