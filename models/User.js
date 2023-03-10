@@ -29,7 +29,7 @@ const UserSchema = new mongoose.Schema({
         type: String, 
         required: [true, 'Please provide password'],
         minLength: 3,
-        select: false // excludes the password when querying
+        select: false 
      },
     location: { 
         type: String, 
@@ -43,15 +43,11 @@ const UserSchema = new mongoose.Schema({
 UserSchema.pre('save', async function(){
     if (!this.isModified('password')) return
 
-    const salt = await bcrypt.genSalt(10) // creating extra characters
+    const salt = await bcrypt.genSalt(10) 
     this.password = await bcrypt.hash(this.password, salt)
-}) // hook that is called when we save (.save()) a doc but not every method triggers it. e.g. findAndUpdate
+}) 
 
-// JWT so only the user can access their jobs
-// JWT is stored in the frontend react state
-// JWT is also stored in local storage. every future request would use that token to validate
 UserSchema.methods.createJWT = function(){
-    // jwt.sign(payload,secret,options)
     return jwt.sign({userID: this._id}, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_LIFETIME,
     })
@@ -62,5 +58,4 @@ UserSchema.methods.comparePassword = async function (candidatePassword) {
   return isMatch;
 };
 
-// will create a Users collection in mongoDB with that schema
 export default mongoose.model('User', UserSchema)
