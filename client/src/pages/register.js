@@ -4,16 +4,12 @@ import Wrapper from '../assets/wrappers/RegisterPage';
 import { useAppContext  } from '../context/appContext';
 import { useNavigate } from 'react-router-dom';
 
-// global context and useNavigate later
-
 const initialState = {
   name: '',
   email: '',
   password: '',
   isMember: true,
 };
-// if possible prefer local state
-// global state
 
 function Register() {
   const [values, setValues] = useState(initialState);

@@ -6,7 +6,6 @@ const router = express.Router()
 router.route('/').post(createJob)
 router.route('/').get(getAllJobs)
 router.route('/stats').get(showStats)
-// :id need to go last
 router.route('/:id').delete(deleteJob)
 router.route('/:id').patch(updateJob)
 

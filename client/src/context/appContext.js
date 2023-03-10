@@ -47,7 +47,6 @@ import {
   editJobId: '',
   position: '',
   company: '',
-  // jobLocation
   jobLocation: userLocation ? userLocation: '',
   jobTypeOptions: ['full-time', 'part-time', 'remote', 'internship'],
   jobType: 'full-time',
@@ -68,13 +67,11 @@ import {
 const AppContext = React.createContext();
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  // axios - adds auth and prevents sending bearer tokens to other api calls which occurs with a global setup
   const authFetch = axios.create({
     baseURL: '/api/v1',
   });
 
   
-  // axios request interceptor. you can think of these as middleware
   authFetch.interceptors.request.use(
     (config) => {
       config.headers['Authorization'] = `Bearer ${state.token}`;
@@ -84,7 +81,6 @@ const AppProvider = ({ children }) => {
       return Promise.reject(error);
     }
   );
-  // axios response interceptor
   authFetch.interceptors.response.use(
     (response) => {
       return response;
@@ -203,7 +199,6 @@ const AppProvider = ({ children }) => {
       dispatch({
         type: CREATE_JOB_SUCCESS,
       });
-      // call function instead clearValues()
       dispatch({ type: CLEAR_VALUES });
     } catch (error) {
       if (error.response.status === 401) return;
@@ -328,7 +323,7 @@ const AppProvider = ({ children }) => {
     </AppContext.Provider>
   );
 };
-// make sure use
+
 const useAppContext = () => {
   return useContext(AppContext);
 };

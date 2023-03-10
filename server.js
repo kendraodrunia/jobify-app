@@ -1,33 +1,15 @@
 import express from 'express';
-/**
- * express is a back end web application framework for building RESTful APIs with Node.js
- */
 import morgan from 'morgan' 
-/**
- * morgan is a Node.js and Express middleware to log HTTP requests and errors, and simplifies the process. In Node.js and Express, middleware is a function that has access to the request and response lifecycle methods, and the next() method to continue logic in your Express server.
- */
 import dotenv from 'dotenv';
 dotenv.config()
-import 'express-async-errors' // this will pass on errors to our error handler middleware
-// db and authenticate user
+import 'express-async-errors' 
 import connectDB from './db/connect.js';
 
 // routers
 import authRouter from './routes/authRoutes.js'
 import jobsRouter from './routes/jobsRoutes.js'
-const app = express(); // app is equal to http.createServer
-//createServer takes in a request listener (which is a function that takes in a request (the api string) and response (body))
-/**
- * 
- const req = https.request(options, (res) => {
-  console.log('statusCode:', res.statusCode);
-  console.log('headers:', res.headers);
+const app = express(); 
 
-  res.on('data', (d) => {
-    process.stdout.write(d);
-  });
-})
- */
 // middleware
 import notFoundMiddleware from './middleware/not-found.js';
 import errorHandlerMiddleware from './middleware/error-handler.js'
@@ -37,8 +19,7 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'));
 }
 
-app.use(express.json()) // this json data available to use to use in the controllers
-
+app.use(express.json()) 
 app.get('/', (req, res) => {
   res.json({msg:'Welcome!'});
 });
@@ -57,12 +38,9 @@ const port = process.env.PORT || 8000;
 
 const start = async ()=>{
   try{
-    await connectDB(process.env.MONGO_URL) // this how we connect to our mongoDB
-
+    await connectDB(process.env.MONGO_URL) 
+    
     app.listen(port, () => console.log(`Server is listening on port ${port}...`));
-    // you're streaming data, leaving a connection open, and any request from the client is listen
-    // takes in a port to listen to
-    // opens up on that specific port. then when clients on the frontend makes a request to that port, and since the app is lien to on that port, the request will be made
   }catch(error){
     console.log(error)
   }

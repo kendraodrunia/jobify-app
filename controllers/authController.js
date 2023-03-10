@@ -5,7 +5,6 @@ import {
     BadRequestError,
     UnAuthenticatedError
 } from '../errors/index.js'
-// don't need the try and catch in very controller by adding a package
 const register = async(req, res, next) =>{
     
     const {name, email, password } = req.body
@@ -29,13 +28,6 @@ const register = async(req, res, next) =>{
     token: token,
     location: user.location,
   })
-//    try {
-//     const user = await User.create(req.body)
-//     res.status(200).json({user})
-//    } catch (error) {
-//     // passes it to the error handler middleware
-//     next(error)
-//     }
 }
 
 const login = async(req, res) =>{
@@ -43,7 +35,6 @@ const login = async(req, res) =>{
   if (!email || !password) {
     throw new BadRequestError('Please provide all values');
   }
-  // we have select: false in the schema. we have to override it by adding the select
   const user = await User.findOne({ email }).select('+password');
 
   if (!user) {
@@ -73,11 +64,7 @@ const updateUser = async(req, res) =>{
   user.location = location;
 
   await user.save();
-
-  // various setups
-  // in this case only id
-  // if other properties included, must re-generate
-
+  
   const token = user.createJWT();
   res.status(StatusCodes.OK).json({
     user,
