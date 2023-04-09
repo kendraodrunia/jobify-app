@@ -3,9 +3,19 @@ import moment from 'moment';
 
 import { FaLocationArrow, FaBriefcase, FaCalendarAlt } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { useAppContext } from '../context/appContext';
-import Wrapper from '../assets/wrappers/Job';
-import JobInfo from './JobInfo';
+import { useAppContext } from '../context/appContext.js';
+import Wrapper from '../assets/wrappers/Job.js';
+import JobInfo from './JobInfo.tsx';
+
+type JobProps = {
+  _id: string,
+  position: string,
+  company: string,
+  jobLocation: string,
+  jobType: string,
+  createdAt: moment.Moment,
+  status: string,
+}
 
 const Job = ({
   _id,
@@ -15,11 +25,10 @@ const Job = ({
   jobType,
   createdAt,
   status,
-}) => {
+}: JobProps) => {
   const { setEditJob, deleteJob } = useAppContext();
 
-  let date = moment(createdAt);
-  date = date.format('MMM Do, YYYY');
+  const date:string = moment(createdAt).format('MMM Do, YYYY');
 
   return (
     <Wrapper>
