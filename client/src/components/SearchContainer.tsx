@@ -3,11 +3,11 @@ import Wrapper from '../assets/wrappers/SearchContainer';
 import { FormRow, FormRowSelect } from './index';
 import {useState, useMemo} from 'react'
 
+
 const SearchContainer = () => {
   const [localSearch, setLocalSearch] = useState("")
   const {
     isLoading,
-    search,
     searchStatus,
     searchType,
     sort,
@@ -18,13 +18,13 @@ const SearchContainer = () => {
     clearFilters,
   } = useAppContext();
 
-  const handleSearch = (e) => {
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     handleChange({ name: e.target.name, value: e.target.value });
   };
 
   const debounce = () => {
-    let timeoutID
-    return (e) => {
+    let timeoutID: ReturnType<typeof setTimeout>
+    return (e: React.ChangeEvent<HTMLInputElement>) => {
       setLocalSearch(e.target.value)
       clearTimeout(timeoutID)
       timeoutID = setTimeout(() => {

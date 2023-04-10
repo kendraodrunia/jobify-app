@@ -1,17 +1,21 @@
 import {
-  ResponsiveContainer,
-  AreaChart,
-  Area,
+  BarChart,
+  Bar,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
+  ResponsiveContainer,
 } from 'recharts';
 
-const AreaChartComponent = ({ data }) => {
+type BarChartComponentProps = {
+  data: object[]
+}
+
+const BarChartComponent = ({ data }: BarChartComponentProps) => {
   return (
     <ResponsiveContainer width='100%' height={300}>
-      <AreaChart
+      <BarChart
         data={data}
         margin={{
           top: 50,
@@ -21,10 +25,10 @@ const AreaChartComponent = ({ data }) => {
         <XAxis dataKey='date' />
         <YAxis allowDecimals={false} />
         <Tooltip />
-        <Area type='monotone' dataKey='count' stroke='#2cb1bc' fill='#bef8fd' />
-      </AreaChart>
+        <Bar dataKey='count' fill='#2cb1bc' barSize={75} />
+      </BarChart>
     </ResponsiveContainer>
   );
 };
 
-export default AreaChartComponent
+export default BarChartComponent

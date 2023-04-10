@@ -1,4 +1,12 @@
-const FormRow = ({ type, name, value, handleChange, labelText }) => {
+type formRow = {
+  type: string,
+  name: string,
+  value: string,
+  handleChange: () => void,
+  labelText: string
+}
+
+const FormRow = ({ type, name, value, handleChange, labelText }: formRow) => {
   return (
     <div className='form-row'>
       <label htmlFor={name} className='form-label'>

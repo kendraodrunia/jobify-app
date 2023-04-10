@@ -1,9 +1,9 @@
-import { useAppContext } from '../context/appContext';
+import { useAppContext } from '../context/appContext.js';
 
 // Components
-import Wrapper from "../assets/wrappers/BigSidebar";
+import Wrapper from "../assets/wrappers/BigSidebar.js";
 import NavLinks from './NavLinks'
-import Logo from '../components/logo';
+import Logo from './logo';
 
 
 const BigSidebar = () =>{

@@ -1,6 +1,14 @@
 import Wrapper from '../assets/wrappers/StatItem';
 
-function StatItem({ count, title, icon, color, bcg }) {
+type StatItemProps = {
+  count: string, 
+  title: string, 
+  icon: JSX.Element,
+  color: string,
+  bcg: string
+}
+
+function StatItem({ count, title, icon, color, bcg }: StatItemProps) {
   return (
     <Wrapper color={color} bcg={bcg}>
       <header>

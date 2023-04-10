@@ -1,5 +1,5 @@
 type LoadingProps = {
-  center: string
+  center: boolean
 }
 
 const Loading = ({ center }: LoadingProps) => {

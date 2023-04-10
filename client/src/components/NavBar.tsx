@@ -1,7 +1,7 @@
-import Wrapper from '../assets/wrappers/Navbar'
+import Wrapper from '../assets/wrappers/Navbar.js'
 import { FaAlignLeft, FaUserCircle, FaCaretDown } from 'react-icons/fa';
 import { useState } from 'react';
-import { useAppContext } from '../context/appContext';
+import { useAppContext } from '../context/appContext.js';
 import Logo from './logo';
 
 const NavBar = () => {

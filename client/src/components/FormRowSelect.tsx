@@ -1,4 +1,12 @@
-const FormRowSelect = ({ labelText, name, value, handleChange, list }) => {
+type FormRowSelectProps = {
+    labelText: string,
+   name: string,
+   value: string,
+   handleChange: () => void,
+   list: string[],
+}
+
+const FormRowSelect = ({ labelText, name, value, handleChange, list }: FormRowSelectProps) => {
   return (
     <div className='form-row'>
       <label htmlFor={name} className='form-label'>
@@ -11,7 +19,7 @@ const FormRowSelect = ({ labelText, name, value, handleChange, list }) => {
         onChange={handleChange}
         className='form-select'
       >
-        {list.map((itemValue, index) => {
+        {list.map((itemValue:string, index: number) => {
           return (
             <option key={index} value={itemValue}>
               {itemValue}

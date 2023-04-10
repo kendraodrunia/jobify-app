@@ -5,7 +5,7 @@ import { FaLocationArrow, FaBriefcase, FaCalendarAlt } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { useAppContext } from '../context/appContext.js';
 import Wrapper from '../assets/wrappers/Job.js';
-import JobInfo from './JobInfo.tsx';
+import JobInfo from './JobInfo';
 
 type JobProps = {
   _id: string,
